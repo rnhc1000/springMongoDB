@@ -1,6 +1,6 @@
-package br.dev.ferreiras.mongoDB.repositories;
+package br.dev.ferreiras.mongodb.repositories;
 
-import br.dev.ferreiras.mongoDB.models.entities.User;
+import br.dev.ferreiras.mongodb.models.entities.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

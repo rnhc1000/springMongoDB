@@ -1,4 +1,4 @@
-package br.dev.ferreiras.mongoDB;
+package br.dev.ferreiras.mongodb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package br.dev.ferreiras.mongoDB;
+package br.dev.ferreiras.mongodb;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
