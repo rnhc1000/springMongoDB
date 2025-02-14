@@ -64,7 +64,7 @@ Docker.
 
 ## _Screenshot_
 
-[![](./webCalculator.png)]()
+[![](./nosql.webp)]()
 
 ## _Links_
 
