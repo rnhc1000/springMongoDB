@@ -60,7 +60,7 @@ public class TestConfig {
 
     postRepository.saveAll(Arrays.asList(postOne, postTwo));
 
-    maria.posts.addAll(Arrays.asList(postOne, postTwo));
+    maria.getPosts().addAll(Arrays.asList(postOne, postTwo));
 
     userRepository.save(maria);
 

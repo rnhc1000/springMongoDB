@@ -1,18 +1,15 @@
-package br.dev.ferreiras.mongodb.models.entities;
+package br.dev.ferreiras.mongodb.models.dto;
 
 import br.dev.ferreiras.mongodb.models.embedded.Author;
 import br.dev.ferreiras.mongodb.models.embedded.Comment;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import br.dev.ferreiras.mongodb.models.entities.Post;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(collection = "posts")
-public class Post {
+public class PostDTO {
 
-  @Id
   private String id;
   private Instant moment;
   private String title;
@@ -21,15 +18,25 @@ public class Post {
 
   private List<Comment> comments = new ArrayList<>();
 
-  public Post() {
+  public PostDTO() {
   }
 
-  public Post(String id, Instant moment, String title, String body, Author author) {
+  public PostDTO(String id, Instant moment, String title, String body, Author author, List<Comment> comments) {
     this.id = id;
     this.moment = moment;
     this.title = title;
     this.body = body;
     this.author = author;
+    this.comments = comments;
+  }
+
+  public PostDTO(Post entity) {
+    id = entity.getId();
+    moment = entity.getMoment();
+    title = entity.getTitle();
+    body = entity.getBody();
+    author = entity.getAuthor();
+    comments.addAll(entity.getComments());
   }
 
   public String getId() {
@@ -48,6 +55,14 @@ public class Post {
     this.moment = moment;
   }
 
+  public Author getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(Author author) {
+    this.author = author;
+  }
+
   public String getTitle() {
     return title;
   }
@@ -64,19 +79,8 @@ public class Post {
     this.body = body;
   }
 
-  public Author getAuthor() {
-    return author;
-  }
-
-  public void setAuthor(Author author) {
-    this.author = author;
-  }
-
   public List<Comment> getComments() {
     return comments;
   }
 
-  public void setComments(List<Comment> comments) {
-    this.comments = comments;
-  }
 }
