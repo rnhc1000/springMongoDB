@@ -5,6 +5,8 @@ import br.dev.ferreiras.mongodb.models.entities.User;
 import br.dev.ferreiras.mongodb.repositories.UserRepository;
 import br.dev.ferreiras.mongodb.services.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -17,40 +19,45 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public List<UserDTO> findAll() {
+  public Flux<UserDTO> findAll() {
+    Flux<User> users = userRepository.findAll();
 
-    List<User> users = userRepository.findAll();
-
-    return users.stream().map(UserDTO::new).toList();
-
+    return users.map(UserDTO::new);
   }
 
-  public UserDTO findUserById(String id) {
-    User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found!!!"));
+  public Mono<UserDTO> findUserById(String id) {
 
-    return new UserDTO(user);
+    return userRepository
+        .findById(id).map(UserDTO::new)
+        .switchIfEmpty(Mono.error(new ResourceNotFoundException("User not found!")));
   }
 
-  public UserDTO addUser(UserDTO dto) {
+  public Mono<UserDTO> addUser(UserDTO dto) {
 
     User user = new User();
 
     dtoToEntity(user, dto);
     user.setId(null);
 
-    user = userRepository.insert(user);
+    Mono<User> result = userRepository.insert(user);
 
-    return new UserDTO(user);
+    return result.map(UserDTO::new);
   }
 
 
-  public UserDTO updateUser(String id, UserDTO userDTO) {
+  public Mono<UserDTO> updateUser(String id, UserDTO userDTO) {
 
-    User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found!!!"));
-    dtoToEntity(user, userDTO);
-    user.setId(null);
-    user = userRepository.save(user);
-    return new UserDTO(user);
+
+    return userRepository
+        .findById(id)
+               .flatMap(existingUser -> {
+                 existingUser.setName(userDTO.getName());
+                 existingUser.setEmail(userDTO.getEmail());
+                 return userRepository.save(existingUser);
+               })
+               .map(UserDTO::new)
+        .switchIfEmpty(Mono.error(() -> new ResourceNotFoundException("Resource not found!!!")));
+
   }
 
   private void dtoToEntity(User user, UserDTO userDTO) {
@@ -59,11 +66,11 @@ public class UserService {
     user.setEmail(userDTO.getEmail());
   }
 
-  public UserDTO deleteUser(String id) {
+  public Mono<UserDTO> deleteUser(String id) {
 
-    User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found!!!"));
+    Mono<User> user = userRepository.findById(id)
+        .switchIfEmpty(Mono.error(() -> new ResourceNotFoundException("User not found!!!")));
     userRepository.deleteById(id);
-
-    return new UserDTO(user);
+    return user.map(UserDTO::new);
   }
 }
