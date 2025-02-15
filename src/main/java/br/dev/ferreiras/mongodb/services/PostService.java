@@ -2,17 +2,14 @@ package br.dev.ferreiras.mongodb.services;
 
 import br.dev.ferreiras.mongodb.models.dto.PostDTO;
 import br.dev.ferreiras.mongodb.models.entities.Post;
-import br.dev.ferreiras.mongodb.models.entities.User;
 import br.dev.ferreiras.mongodb.repositories.PostRepository;
 import br.dev.ferreiras.mongodb.repositories.UserRepository;
 import br.dev.ferreiras.mongodb.services.exceptions.ResourceNotFoundException;
-import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostService {
@@ -25,45 +22,40 @@ public class PostService {
     this.userRepository = userRepository;
   }
 
-  public List<PostDTO> getAllPosts(String id) {
-    User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found!!!"));
+  public Flux<PostDTO> getAllPosts() {
+    return postRepository.findAll()
+        .map(PostDTO::new);
 
-    return user.getPosts().stream().map(PostDTO::new).toList();
   }
 
-  public PostDTO findPostById(String id) {
-    Post entity = getEntityById(id);
+  public Mono<PostDTO> findPostById(String id) {
+    Mono<Post> entity = postRepository.findById(id)
+        .switchIfEmpty(Mono.error(() -> new ResourceNotFoundException("Post not found")));
 
-    return new PostDTO(entity);
+    return entity.map(PostDTO::new);
   }
 
-  public List<PostDTO> findByTitle(String text) {
-    List<Post> posts = postRepository.searchByTitle(text);
 
-    return posts.stream().map(PostDTO::new).toList();
+  public Flux<PostDTO> findByTitle(String text) {
+    Flux<Post> posts = postRepository.searchByTitle(text);
+
+    return posts.map(PostDTO::new);
   }
 
-  public List<PostDTO> fullSearch(String text, String start, String end) {
+  public Flux<PostDTO> fullSearch(String text, String start, String end) {
 
     Instant startMoment = convertMoment(start);
     Instant endMoment = convertMoment(end);
 
-    List<Post> posts = postRepository.fullSearch(text, startMoment, endMoment);
+    Flux<Post> posts = postRepository.fullSearch(text, startMoment, endMoment);
 
-    return posts.stream().map(PostDTO::new).toList();
+    return posts.map(PostDTO::new);
   }
 
   private Instant convertMoment(String moment) {
 
     return Instant.parse(moment);
   }
-
-  private Post getEntityById(String id) {
-    Optional<Post> result = postRepository.findById(id);
-
-    return result.orElseThrow(() -> new ResourceNotFoundException("Post not found!!!"));
-  }
-
 
 }
 

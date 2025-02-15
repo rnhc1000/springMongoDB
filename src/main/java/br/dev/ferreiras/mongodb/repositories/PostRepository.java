@@ -1,15 +1,15 @@
 package br.dev.ferreiras.mongodb.repositories;
 
 import br.dev.ferreiras.mongodb.models.entities.Post;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 
 import java.time.Instant;
-import java.util.List;
 
 @Repository
-public interface PostRepository extends MongoRepository<Post, String> {
+public interface PostRepository extends ReactiveMongoRepository<Post, String> {
 
 
   @Query("""   
@@ -17,7 +17,7 @@ public interface PostRepository extends MongoRepository<Post, String> {
       'title': { $regex: ?0, $options: 'i' }
       }
       """)
-  List<Post> searchByTitle(String text);
+  Flux<Post> searchByTitle(String text);
 
   @Query(
       """
@@ -33,7 +33,7 @@ public interface PostRepository extends MongoRepository<Post, String> {
         ]
       }
       """)
-  List<Post> fullSearch(String text, Instant startMoment, Instant endMoment);
+  Flux<Post> fullSearch(String text, Instant startMoment, Instant endMoment);
 
-  List<Post> findByTitleContainingIgnoreCase(String text);
+  Flux<Post> findByTitleContainingIgnoreCase(String text);
 }

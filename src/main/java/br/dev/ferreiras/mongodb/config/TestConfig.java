@@ -10,6 +10,8 @@ import br.dev.ferreiras.mongodb.repositories.PostRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -31,14 +33,19 @@ public class TestConfig {
   @PostConstruct
   public void init() {
 
-    userRepository.deleteAll();
+    Mono<Void> deleteUsers = userRepository.deleteAll();
+    deleteUsers.subscribe();
+
+    Mono<Void> deletePosts = postRepository.deleteAll();
+    deletePosts.subscribe();
+
     User maria = new User(null, "Maria Brown", "maria@gmail.com");
     User alex = new User(null, "Alex Green", "alex@gmail.com");
     User bob = new User(null, "Bob Grey", "bob@gmail.com");
 
-    userRepository.saveAll(Arrays.asList(maria, alex, bob));
+    Flux<User> insertUsers = userRepository.saveAll(Arrays.asList(maria, alex, bob));
+    insertUsers.subscribe();
 
-    postRepository.deleteAll();
 
     Post postOne = new Post(null, Instant.parse("2025-02-13T14:50:00Z"),
         "Business Trip", "Travel to Sampa", new Author(maria));
@@ -58,11 +65,12 @@ public class TestConfig {
     postOne.getComments().addAll(Arrays.asList(commentOne, commentTwo));
     postTwo.getComments().add(commentThree);
 
-    postRepository.saveAll(Arrays.asList(postOne, postTwo));
+    Flux<Post> insertPosts = postRepository.saveAll(Arrays.asList(postOne, postTwo));
+    insertPosts.subscribe();
 
-    maria.getPosts().addAll(Arrays.asList(postOne, postTwo));
-
-    userRepository.save(maria);
+//    maria.getPosts().addAll(Arrays.asList(postOne, postTwo));
+//
+//    userRepository.save(maria);
 
 
 
