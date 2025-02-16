@@ -1,6 +1,10 @@
-## _RESTFul API - MongoDB_ <br />
+## _Reactive RESTFul API - MongoDB_ <br />
+
 NoSQL databases represent a new challenge when compared with relational databases.
-Here is how I faced the challenge creating an API based on a document database.
+Combined with Reactive Programming Paradigm implemented by Spring Webflux fully supporting
+<a href="https://www.reactive-streams.org/" target= "_blanket">Reactive Streams</a> is a game changer
+on how to take advantage of using asynchronous stream processing with non-blocking back pressure, offering
+significant gains of performance for those applications that must support thousands of simultaneous requests.
 
 ## _Table of contents_
 
@@ -19,34 +23,65 @@ Here is how I faced the challenge creating an API based on a document database.
 
 ## _Overview_
 
-This API has a bunch of endpoints to return Posts and Comments associated to a User.
+This API has a bunch of endpoints to return Posts and Comments associated to a User according to this the JSON representation:
+
+```
+{
+    _id: ObjectId('67b0edf01a432d53fce1d509'),
+    moment: ISODate('2025-02-13T14:50:00.000Z'),
+    title: 'Business Trip',
+    body: 'Travel to Sampa',
+    author: {
+        name: 'Maria Brown'
+    },
+    comments: [
+        {
+            text: 'Have a nice and safe trip',
+            moment: ISODate('2025-02-13T14:55:00.000Z'),
+            author: {
+                name: 'Alex Green'
+            }
+    },
+        {
+            text: 'Enjoy it!',
+            moment: ISODate('2025-02-13T14:59:00.000Z'),
+            author: {
+                name: 'Bob Grey'
+            }
+        }
+    ],
+    _class: 'br.dev.ferreiras.mongodb.models.entities.Post'
+}
+```
+
 <br />
 
 ## _Features_
 
-The app has been coded using Java 21, Spring Boot 3.4.2, Maven, Javadoc, Spring MongoDB, Spring JPA,
+The app has been coded using Java 21, Spring Boot 3.4.2, Maven, Javadoc, Reactive Spring MongoDB, Spring Webflux,
 Docker.
 <br /
 
 ## _Project Structure_
+
 - docs
-   - javadocs
+    - javadocs
 - src
     - main
     - java
         - br.dev.ferreiras.mongodb
             - config
             - controller
-              - handlers 
+                - handlers
             - dto
             - model
-              - entities
-              - dto
-              - embedded
+                - entities
+                - dto
+                - embedded
             - mapper
             - repository
             - services
-              - exceptions
+                - exceptions
     - resources
         - application-test.properties
         - application-properties
@@ -79,14 +114,14 @@ Docker.
 ```java
 
 /**
- * 
+ *
  * @author ricardo@ferreiras.dev.br
  * @version 1.1.030901
  * @since 1.0
  *
  */
 @Repository
-public interface PostRepository extends MongoRepository<Post, String> {
+public interface PostRepository extends ReactiveMongoRepository<Post, String> {
 
 
   @Query("""   
@@ -94,7 +129,7 @@ public interface PostRepository extends MongoRepository<Post, String> {
       'title': { $regex: ?0, $options: 'i' }
       }
       """)
-  List<Post> searchByTitle(String text);
+  Flux<Post> searchByTitle(String text);
 
   @Query(
       """
@@ -110,27 +145,34 @@ public interface PostRepository extends MongoRepository<Post, String> {
             ]
           }
           """)
-  List<Post> fullSearch(String text, Instant startMoment, Instant endMoment);
+  Flux<Post> fullSearch(String text, Instant startMoment, Instant endMoment);
 
-  List<Post> findByTitleContainingIgnoreCase(String text);
+  Flux<Post> findByTitleContainingIgnoreCase(String text);
 }
 
 ``` 
 
 ## _Continued development_
 
-- Unit Tests 
+- Unit Tests
+- HATEOAS
+- Versioning
+- Swagger Docs
 
 ### _Useful resources_
 
-- [https://spring.io] Awesome Java framework!.
+- [https://spring.io/] Awesome Java framework!.
 - [https://start.spring.io/]  Handy startup tool.
-- [https://mvnrepository.com] Tools that help tackle the beast
+- [https://mvnrepository.com/] Tools that help tackle the beast
 - [https://docs.spring.io/spring-data/mongodb/reference/]  MongoDB reference doc
+- [https://www.reactive-streams.org/]  Reactive Streams
+- [https://docs.spring.io/spring-framework/reference/web/webflux.html/]  Spring Webflux
 
 ## _Author_
+
 <a href="mailto:ricardo@ferreiras.dev.br">Ricardo Ferreira</a>
 
 ## - _Portfolio_
+
 <a href="https://www.ferreiras.dev.br" target="_blank">My Portfolio...</a>
 
