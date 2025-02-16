@@ -58,9 +58,9 @@ This API has a bunch of endpoints to return Posts and Comments associated to a U
 
 ## _Features_
 
-The app has been coded using Java 21, Spring Boot 3.4.2, Maven, Javadoc, Reactive Spring MongoDB, Spring Webflux,
+The app has been coded using Java 21, Spring Boot 3.4.2, MongoDB 4.4.2, Maven, Javadoc, Reactive Spring MongoDB, Spring Webflux,
 Docker.
-<br /
+<br />
 
 ## _Project Structure_
 
@@ -99,7 +99,7 @@ Docker.
 
 ## _Screenshot_
 
-[![](./nosql.webp)]()
+[![](./mermaid-diagram-2025-02-16-112241.svg)]()
 
 ## _Links_
 
