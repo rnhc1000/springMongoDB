@@ -46,7 +46,6 @@ public class TestConfig {
     Flux<User> insertUsers = userRepository.saveAll(Arrays.asList(maria, alex, bob));
     insertUsers.subscribe();
 
-
     Post postOne = new Post(null, Instant.parse("2025-02-13T14:50:00Z"),
         "Business Trip", "Travel to Sampa", new Author(maria));
 
@@ -69,8 +68,8 @@ public class TestConfig {
     insertPosts.subscribe();
 
 //    maria.getPosts().addAll(Arrays.asList(postOne, postTwo));
-//
-//    userRepository.save(maria);
+
+    userRepository.save(maria);
 
 
 
