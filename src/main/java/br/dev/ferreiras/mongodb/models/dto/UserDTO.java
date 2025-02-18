@@ -1,8 +1,9 @@
 package br.dev.ferreiras.mongodb.models.dto;
 
 import br.dev.ferreiras.mongodb.models.entities.User;
+import org.springframework.hateoas.RepresentationModel;
 
-public class UserDTO {
+public class UserDTO extends RepresentationModel<UserDTO> {
   private String id;
   private String name;
   private String email;

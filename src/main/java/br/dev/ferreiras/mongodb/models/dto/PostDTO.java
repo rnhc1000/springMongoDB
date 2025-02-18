@@ -3,17 +3,24 @@ package br.dev.ferreiras.mongodb.models.dto;
 import br.dev.ferreiras.mongodb.models.embedded.Author;
 import br.dev.ferreiras.mongodb.models.embedded.Comment;
 import br.dev.ferreiras.mongodb.models.entities.Post;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostDTO {
+public class PostDTO extends RepresentationModel<PostDTO>{
 
+  @Schema(description = "Database generated post id")
   private String id;
   private Instant moment;
+
+  @Schema(description = "Post Title")
   private String title;
   private String body;
+
+  @Schema(description = "Post Author")
   private Author author;
 
   private List<Comment> comments = new ArrayList<>();

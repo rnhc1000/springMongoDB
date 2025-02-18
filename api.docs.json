@@ -1,0 +1,1070 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Reactive RESTFUL Api",
+    "description": "Reactive Restful API with Spring Webflux and Mongo|DB",
+    "contact": {
+      "name": ":Ricardo Ferreira",
+      "email": "ricardo@ferreiras.dev.br"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/rnhc1000/springMongoDB/posts-ref"
+    },
+    "version": "1.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8095\n",
+      "description": "Development"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Controller for Users"
+    },
+    {
+      "name": "Posts",
+      "description": "Controller for Posts"
+    }
+  ],
+  "paths": {
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "List user given his/her id users",
+        "description": "List user given his/her id",
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User returned by his/her id",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "403": {
+            "description": "Access Denied!"
+          },
+          "404": {
+            "description": "Users not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update  user given his/her id users",
+        "description": "Update user given his/her id",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User returned by his/her id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "403": {
+            "description": "Access Denied!"
+          },
+          "404": {
+            "description": "Users not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete user given his/her id users",
+        "description": "Delete user given his/her id",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "403": {
+            "description": "Access Denied!"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "List registered users",
+        "description": "List registered users",
+        "operationId": "getAllUsers",
+        "responses": {
+          "200": {
+            "description": "List of Registered Users",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDTO"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "403": {
+            "description": "Access Denied!"
+          },
+          "404": {
+            "description": "Users not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Add user",
+        "description": "Add user, given his/her name and email",
+        "operationId": "saveUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "403": {
+            "description": "Access Denied!"
+          },
+          "404": {
+            "description": "Users not found"
+          }
+        }
+      }
+    },
+    "/posts": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "List posts",
+        "description": "List posts of all users",
+        "operationId": "getAllPosts",
+        "responses": {
+          "200": {
+            "description": "List of Posts",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseEntityPostDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "403": {
+            "description": "Access Denied!"
+          },
+          "404": {
+            "description": "Users not found"
+          }
+        }
+      }
+    },
+    "/posts/{id}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "List posts by User id",
+        "description": "List posts by User id",
+        "operationId": "getPostById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Posts",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "403": {
+            "description": "Access Denied!"
+          },
+          "404": {
+            "description": "Users not found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/posts/titlesearch": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "operationId": "getPostByTitle",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseEntityPostDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts/fullsearch": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "operationId": "fullPostSearch",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "1970-01-01T00:00:00Z"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "2025-12-31T23:59:59Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseEntityPostDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "Author": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "moment": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "author": {
+            "$ref": "#/components/schemas/Author"
+          }
+        }
+      },
+      "ContentDisposition": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "deprecated": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "deprecated": true
+          },
+          "modificationDate": {
+            "type": "string",
+            "format": "date-time",
+            "deprecated": true
+          },
+          "readDate": {
+            "type": "string",
+            "format": "date-time",
+            "deprecated": true
+          },
+          "attachment": {
+            "type": "boolean"
+          },
+          "formData": {
+            "type": "boolean"
+          },
+          "inline": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DefaultHttpStatusCode": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          }
+        ]
+      },
+      "HttpMethod": {
+        "type": "object"
+      },
+      "HttpRange": {
+        "type": "object"
+      },
+      "HttpStatus": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          }
+        ],
+        "enum": [
+          "100 CONTINUE",
+          "101 SWITCHING_PROTOCOLS",
+          "102 PROCESSING",
+          "103 EARLY_HINTS",
+          "103 CHECKPOINT",
+          "200 OK",
+          "201 CREATED",
+          "202 ACCEPTED",
+          "203 NON_AUTHORITATIVE_INFORMATION",
+          "204 NO_CONTENT",
+          "205 RESET_CONTENT",
+          "206 PARTIAL_CONTENT",
+          "207 MULTI_STATUS",
+          "208 ALREADY_REPORTED",
+          "226 IM_USED",
+          "300 MULTIPLE_CHOICES",
+          "301 MOVED_PERMANENTLY",
+          "302 FOUND",
+          "302 MOVED_TEMPORARILY",
+          "303 SEE_OTHER",
+          "304 NOT_MODIFIED",
+          "305 USE_PROXY",
+          "307 TEMPORARY_REDIRECT",
+          "308 PERMANENT_REDIRECT",
+          "400 BAD_REQUEST",
+          "401 UNAUTHORIZED",
+          "402 PAYMENT_REQUIRED",
+          "403 FORBIDDEN",
+          "404 NOT_FOUND",
+          "405 METHOD_NOT_ALLOWED",
+          "406 NOT_ACCEPTABLE",
+          "407 PROXY_AUTHENTICATION_REQUIRED",
+          "408 REQUEST_TIMEOUT",
+          "409 CONFLICT",
+          "410 GONE",
+          "411 LENGTH_REQUIRED",
+          "412 PRECONDITION_FAILED",
+          "413 PAYLOAD_TOO_LARGE",
+          "413 REQUEST_ENTITY_TOO_LARGE",
+          "414 URI_TOO_LONG",
+          "414 REQUEST_URI_TOO_LONG",
+          "415 UNSUPPORTED_MEDIA_TYPE",
+          "416 REQUESTED_RANGE_NOT_SATISFIABLE",
+          "417 EXPECTATION_FAILED",
+          "418 I_AM_A_TEAPOT",
+          "419 INSUFFICIENT_SPACE_ON_RESOURCE",
+          "420 METHOD_FAILURE",
+          "421 DESTINATION_LOCKED",
+          "422 UNPROCESSABLE_ENTITY",
+          "423 LOCKED",
+          "424 FAILED_DEPENDENCY",
+          "425 TOO_EARLY",
+          "426 UPGRADE_REQUIRED",
+          "428 PRECONDITION_REQUIRED",
+          "429 TOO_MANY_REQUESTS",
+          "431 REQUEST_HEADER_FIELDS_TOO_LARGE",
+          "451 UNAVAILABLE_FOR_LEGAL_REASONS",
+          "500 INTERNAL_SERVER_ERROR",
+          "501 NOT_IMPLEMENTED",
+          "502 BAD_GATEWAY",
+          "503 SERVICE_UNAVAILABLE",
+          "504 GATEWAY_TIMEOUT",
+          "505 HTTP_VERSION_NOT_SUPPORTED",
+          "506 VARIANT_ALSO_NEGOTIATES",
+          "507 INSUFFICIENT_STORAGE",
+          "508 LOOP_DETECTED",
+          "509 BANDWIDTH_LIMIT_EXCEEDED",
+          "510 NOT_EXTENDED",
+          "511 NETWORK_AUTHENTICATION_REQUIRED"
+        ]
+      },
+      "HttpStatusCode": {
+        "type": "object",
+        "properties": {
+          "is4xxClientError": {
+            "type": "boolean"
+          },
+          "is5xxServerError": {
+            "type": "boolean"
+          },
+          "is1xxInformational": {
+            "type": "boolean"
+          },
+          "is2xxSuccessful": {
+            "type": "boolean"
+          },
+          "is3xxRedirection": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MediaType": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "subtype": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "qualityValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "wildcardType": {
+            "type": "boolean"
+          },
+          "subtypeSuffix": {
+            "type": "string"
+          },
+          "concrete": {
+            "type": "boolean"
+          },
+          "wildcardSubtype": {
+            "type": "boolean"
+          },
+          "charset": {
+            "type": "string"
+          }
+        }
+      },
+      "PostDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Database generated post id"
+          },
+          "moment": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "title": {
+            "type": "string",
+            "description": "Post Title"
+          },
+          "body": {
+            "type": "string"
+          },
+          "author": {
+            "$ref": "#/components/schemas/Author",
+            "description": "Post Author"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          }
+        }
+      },
+      "ResponseEntityPostDTO": {
+        "type": "object",
+        "properties": {
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "properties": {
+              "range": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HttpRange"
+                }
+              },
+              "cacheControl": {
+                "type": "string"
+              },
+              "allow": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HttpMethod"
+                },
+                "uniqueItems": true
+              },
+              "host": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "hostAddress": {
+                        "type": "string"
+                      },
+                      "address": {
+                        "type": "string",
+                        "format": "byte"
+                      },
+                      "hostName": {
+                        "type": "string"
+                      },
+                      "linkLocalAddress": {
+                        "type": "boolean"
+                      },
+                      "multicastAddress": {
+                        "type": "boolean"
+                      },
+                      "anyLocalAddress": {
+                        "type": "boolean"
+                      },
+                      "loopbackAddress": {
+                        "type": "boolean"
+                      },
+                      "siteLocalAddress": {
+                        "type": "boolean"
+                      },
+                      "mcglobal": {
+                        "type": "boolean"
+                      },
+                      "mcnodeLocal": {
+                        "type": "boolean"
+                      },
+                      "mclinkLocal": {
+                        "type": "boolean"
+                      },
+                      "mcsiteLocal": {
+                        "type": "boolean"
+                      },
+                      "mcorgLocal": {
+                        "type": "boolean"
+                      },
+                      "canonicalHostName": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "port": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "unresolved": {
+                    "type": "boolean"
+                  },
+                  "hostName": {
+                    "type": "string"
+                  },
+                  "hostString": {
+                    "type": "string"
+                  }
+                }
+              },
+              "accept": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
+                }
+              },
+              "contentLanguage": {
+                "type": "object",
+                "properties": {
+                  "language": {
+                    "type": "string"
+                  },
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "variant": {
+                    "type": "string"
+                  },
+                  "script": {
+                    "type": "string"
+                  },
+                  "unicodeLocaleAttributes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "uniqueItems": true
+                  },
+                  "unicodeLocaleKeys": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "uniqueItems": true
+                  },
+                  "displayLanguage": {
+                    "type": "string"
+                  },
+                  "displayScript": {
+                    "type": "string"
+                  },
+                  "displayCountry": {
+                    "type": "string"
+                  },
+                  "displayVariant": {
+                    "type": "string"
+                  },
+                  "extensionKeys": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "uniqueItems": true
+                  },
+                  "iso3Language": {
+                    "type": "string"
+                  },
+                  "iso3Country": {
+                    "type": "string"
+                  }
+                }
+              },
+              "etag": {
+                "type": "string"
+              },
+              "accessControlAllowOrigin": {
+                "type": "string"
+              },
+              "accessControlAllowMethods": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/HttpMethod"
+                }
+              },
+              "accessControlAllowHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessControlExposeHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "accessControlAllowCredentials": {
+                "type": "boolean"
+              },
+              "accessControlMaxAge": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "accessControlRequestMethod": {
+                "$ref": "#/components/schemas/HttpMethod"
+              },
+              "accessControlRequestHeaders": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "acceptPatch": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MediaType"
+                }
+              },
+              "acceptLanguage": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "range": {
+                      "type": "string"
+                    },
+                    "weight": {
+                      "type": "number",
+                      "format": "double"
+                    }
+                  }
+                }
+              },
+              "basicAuth": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "acceptLanguageAsLocales": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "language": {
+                      "type": "string"
+                    },
+                    "displayName": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "variant": {
+                      "type": "string"
+                    },
+                    "script": {
+                      "type": "string"
+                    },
+                    "unicodeLocaleAttributes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "uniqueItems": true
+                    },
+                    "unicodeLocaleKeys": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "uniqueItems": true
+                    },
+                    "displayLanguage": {
+                      "type": "string"
+                    },
+                    "displayScript": {
+                      "type": "string"
+                    },
+                    "displayCountry": {
+                      "type": "string"
+                    },
+                    "displayVariant": {
+                      "type": "string"
+                    },
+                    "extensionKeys": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "uniqueItems": true
+                    },
+                    "iso3Language": {
+                      "type": "string"
+                    },
+                    "iso3Country": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "acceptCharset": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "bearerAuth": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "connection": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "contentDisposition": {
+                "$ref": "#/components/schemas/ContentDisposition"
+              },
+              "expires": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "ifMatch": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ifNoneMatch": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ifUnmodifiedSince": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "origin": {
+                "type": "string"
+              },
+              "pragma": {
+                "type": "string"
+              },
+              "upgrade": {
+                "type": "string"
+              },
+              "vary": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "location": {
+                "type": "string",
+                "format": "uri"
+              },
+              "empty": {
+                "type": "boolean"
+              },
+              "all": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "writeOnly": true
+              },
+              "lastModified": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "date": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "contentLength": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "ifModifiedSince": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "contentType": {
+                "$ref": "#/components/schemas/MediaType"
+              }
+            }
+          },
+          "body": {
+            "$ref": "#/components/schemas/PostDTO"
+          },
+          "statusCodeValue": {
+            "type": "integer",
+            "format": "int32",
+            "deprecated": true
+          },
+          "statusCode": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DefaultHttpStatusCode"
+              },
+              {
+                "$ref": "#/components/schemas/HttpStatus"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
