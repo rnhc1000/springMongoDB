@@ -2,14 +2,20 @@ package br.dev.ferreiras.mongodb.controllers;
 
 import br.dev.ferreiras.mongodb.models.dto.PostDTO;
 import br.dev.ferreiras.mongodb.services.PostService;
-import org.apache.coyote.Response;
+import de.kamillionlabs.hateoflux.http.HalResourceResponse;
+import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
+@Tag(name = "Posts", description = "Controller for Posts")
 @RestController
 @RequestMapping(value = "/posts")
 public class PostController {
@@ -20,6 +26,16 @@ public class PostController {
     this.postService = postService;
   }
 
+  @Operation(
+      summary = "List posts",
+      description = "List posts of all users",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "List of Posts"),
+          @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content),
+          @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content),
+          @ApiResponse(responseCode = "404", description = "Users not found", content = @Content)
+      }
+  )
   @GetMapping
   public Flux<ResponseEntity<PostDTO>> getAllPosts() {
 
@@ -30,13 +46,23 @@ public class PostController {
             .body(posts));
   }
 
+  @Operation(
+      summary = "List posts by User id",
+      description = "List posts by User id",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "List of Posts"),
+          @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content),
+          @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content),
+          @ApiResponse(responseCode = "404", description = "Users not found", content = @Content)
+      }
+  )
+  @SecurityRequirement(name = "bearerAuth")
   @GetMapping(value = "/{id}")
-  public Mono<ResponseEntity<PostDTO>> getPostById(@PathVariable String id) {
+  public HalResourceResponse<PostDTO, Void> getPostById(@PathVariable String id) {
 
-    return postService.findPostById(id)
-        .map(post -> ResponseEntity
-            .ok()
-            .body(post));
+    Mono<HalResourceWrapper<PostDTO, Void>> posts = postService.findPostById(id);
+
+    return HalResourceResponse.of(posts,  Mono.just(HttpStatus.OK));
   }
 
   @GetMapping(value = "/titlesearch")

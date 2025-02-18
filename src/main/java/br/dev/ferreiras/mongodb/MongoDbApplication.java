@@ -5,11 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.hateoas.config.EnableHypermediaSupport;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @SpringBootApplication
+@EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 public class MongoDbApplication implements CommandLineRunner {
 public static final Logger logger = LoggerFactory.getLogger(MongoDbApplication.class);
 

@@ -5,11 +5,14 @@ import br.dev.ferreiras.mongodb.models.entities.Post;
 import br.dev.ferreiras.mongodb.repositories.PostRepository;
 import br.dev.ferreiras.mongodb.repositories.UserRepository;
 import br.dev.ferreiras.mongodb.services.exceptions.ResourceNotFoundException;
+import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
+
 
 @Service
 public class PostService {
@@ -23,16 +26,21 @@ public class PostService {
   }
 
   public Flux<PostDTO> getAllPosts() {
-    return postRepository.findAll()
-        .map(PostDTO::new);
+    Flux<Post> posts = postRepository.findAll();
 
+    return posts.map(PostDTO::new);
   }
 
-  public Mono<PostDTO> findPostById(String id) {
+  public Mono<HalResourceWrapper<PostDTO, Void>> findPostById(String id) {
     Mono<Post> entity = postRepository.findById(id)
         .switchIfEmpty(Mono.error(() -> new ResourceNotFoundException("Post not found")));
 
-    return entity.map(PostDTO::new);
+    Mono<PostDTO> postById = entity.map(PostDTO::new);
+
+    return postById.map(post -> HalResourceWrapper.wrap(post)
+        .withLinks(de.kamillionlabs.hateoflux.model.link.Link.of("http://127.0.0.1:8095/posts/{id}")
+            .expand(id)
+            .withRel("self")));
   }
 
 
