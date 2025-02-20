@@ -4,12 +4,13 @@ import br.dev.ferreiras.mongodb.models.dto.PostDTO;
 import br.dev.ferreiras.mongodb.services.PostService;
 import de.kamillionlabs.hateoflux.http.HalResourceResponse;
 import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
+import de.kamillionlabs.hateoflux.model.link.Link;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -60,9 +61,15 @@ public class PostController {
   @GetMapping(value = "/{id}")
   public HalResourceResponse<PostDTO, Void> getPostById(@PathVariable String id) {
 
-    Mono<HalResourceWrapper<PostDTO, Void>> posts = postService.findPostById(id);
+    Mono<PostDTO> postById = postService.findPostById(id);
+    var finalPost = postById.map(post -> HalResourceWrapper.wrap(post)
+        .withLinks(Link.of("/posts/{id}")
+                .expand(id)
+                .withRel("self"),
+            Link.linkAsSelfOf("posts/" + id)));
 
-    return HalResourceResponse.of(posts,  Mono.just(HttpStatus.OK));
+    return HalResourceResponse.ok(finalPost).withContentType(MediaType.APPLICATION_JSON_VALUE)
+        .withHeader("Custom-header", "value");
   }
 
   @GetMapping(value = "/titlesearch")

@@ -33,7 +33,7 @@ public class OpenApiConfig{
   public OpenAPI defineOpenApi() {
     final Server server = new Server();
     server.setUrl("""
-            http://127.0.0.1:8095
+            http://127.0.0.1:8090
             """);
     server.setDescription("Development");
 
@@ -44,7 +44,7 @@ public class OpenApiConfig{
     final Info information = new Info()
         .title("Reactive RESTFUL Api")
         .version("1.0.1")
-        .description("Reactive Restful API with Spring Webflux and Mongo|DB")
+        .description("Reactive Restful API with Spring Webflux and MongoDB")
         .contact(myContact)
         .license(new License()
             .name("Apache 2.0")
