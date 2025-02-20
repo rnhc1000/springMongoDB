@@ -1,10 +1,10 @@
 ## _Reactive RESTFul API - MongoDB_ <br />
 
-NoSQL databases represent a new challenge when compared with relational databases.
+NoSQL databases represent a new challenge when compared to relational databases.
 Combined with Reactive Programming Paradigm implemented by Spring Webflux fully supporting
 <a href="https://www.reactive-streams.org/" target= "_blanket">Reactive Streams</a> is a game changer
-on how to take advantage of using asynchronous stream processing with non-blocking back pressure, offering
-significant gains of performance for those applications that must support thousands of simultaneous requests.
+on how to take advantage of using asynchronous stream processing with non-blocking back pressure, dealing with a document-based
+database, offering significant gains of performance for those applications that must support thousands of simultaneous requests.
 
 ## _Table of contents_
 
@@ -23,7 +23,8 @@ significant gains of performance for those applications that must support thousa
 
 ## _Overview_
 
-This API has a bunch of endpoints to return Posts and Comments associated to a User according to this the JSON representation:
+This API offers reactive endpoints to return Posts and Comments associated to a User according to this the JSON 
+schema:
 
 ```
 {
@@ -58,8 +59,8 @@ This API has a bunch of endpoints to return Posts and Comments associated to a U
 
 ## _Features_
 
-The app has been coded using Java 21, Spring Boot 3.4.2, MongoDB 4.4.2, Maven, Javadoc, Reactive Spring MongoDB, Spring Webflux,
-Docker.
+The API has been coded using Java 21, Spring Boot 3.4.2, MongoDB 4.4.2, Maven, Javadoc, Reactive Spring MongoDB, 
+Spring Webflux and Docker.
 <br />
 
 ## _Project Structure_

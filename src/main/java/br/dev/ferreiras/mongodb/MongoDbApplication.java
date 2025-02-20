@@ -26,19 +26,19 @@ public static final Logger logger = LoggerFactory.getLogger(MongoDbApplication.c
 	@Override
 	public void run(String... args) throws Exception {
 
-		final LocalDateTime localTime = LocalDateTime.now();
 		final ZonedDateTime zonedDateTime = ZonedDateTime.now(ZonedDateTime.now().getZone());
 		final String javaVersion = System.getProperty("java.version");
 		final int  numOfCores = Runtime.getRuntime().availableProcessors();
+		final long totalMemory = Runtime.getRuntime().totalMemory()/1000_000L;
 
 		if (MongoDbApplication.logger.isInfoEnabled()) {
-			MongoDbApplication.logger.info("MongoDB Restful API started running at {}, zone {}, running java version {}, on top of {} cores",
-					localTime,
+			MongoDbApplication.logger.info("MongoDB Restful API started running at {},running java version {}, " +
+																		 "on top of {} cores and {}MB of RAM",
 					zonedDateTime,
 					javaVersion,
-					numOfCores
+					numOfCores,
+					totalMemory
 			);
 		}
-
 	}
 }
