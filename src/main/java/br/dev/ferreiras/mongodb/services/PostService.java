@@ -6,7 +6,6 @@ import br.dev.ferreiras.mongodb.repositories.PostRepository;
 import br.dev.ferreiras.mongodb.repositories.UserRepository;
 import br.dev.ferreiras.mongodb.services.exceptions.ResourceNotFoundException;
 import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
-import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -38,11 +37,10 @@ public class PostService {
     Mono<PostDTO> postById = entity.map(PostDTO::new);
 
     return postById.map(post -> HalResourceWrapper.wrap(post)
-        .withLinks(de.kamillionlabs.hateoflux.model.link.Link.of("http://127.0.0.1:8095/posts/{id}")
+        .withLinks(de.kamillionlabs.hateoflux.model.link.Link.of("http://127.0.0.1:8095/posts/{id}1")
             .expand(id)
             .withRel("self")));
   }
-
 
   public Flux<PostDTO> findByTitle(String text) {
     Flux<Post> posts = postRepository.searchByTitle(text);
