@@ -30,16 +30,11 @@ public class PostService {
     return posts.map(PostDTO::new);
   }
 
-  public Mono<HalResourceWrapper<PostDTO, Void>> findPostById(String id) {
+  public Mono<PostDTO> findPostById(String id) {
     Mono<Post> entity = postRepository.findById(id)
         .switchIfEmpty(Mono.error(() -> new ResourceNotFoundException("Post not found")));
 
-    Mono<PostDTO> postById = entity.map(PostDTO::new);
-
-    return postById.map(post -> HalResourceWrapper.wrap(post)
-        .withLinks(de.kamillionlabs.hateoflux.model.link.Link.of("http://127.0.0.1:8095/posts/{id}1")
-            .expand(id)
-            .withRel("self")));
+    return  entity.map(PostDTO::new);
   }
 
   public Flux<PostDTO> findByTitle(String text) {
