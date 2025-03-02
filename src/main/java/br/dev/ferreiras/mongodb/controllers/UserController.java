@@ -72,7 +72,6 @@ public class UserController {
           @ApiResponse(responseCode = "404", description = "Users not found", content = @Content)
       }
   )
-
   @PostMapping(produces = "application/json")
   public Mono<ResponseEntity<UserDTO>> saveUser(@RequestBody UserDTO userDTO, UriComponentsBuilder builder) {
 

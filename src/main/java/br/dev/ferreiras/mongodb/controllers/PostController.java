@@ -71,7 +71,7 @@ public class PostController {
     return HalResourceResponse.ok(finalPost).withContentType(MediaType.APPLICATION_JSON_VALUE)
         .withHeader("Custom-header", "value");
   }
-
+  
   @GetMapping(value = "/titlesearch")
   public Flux<ResponseEntity<PostDTO>> getPostByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
 

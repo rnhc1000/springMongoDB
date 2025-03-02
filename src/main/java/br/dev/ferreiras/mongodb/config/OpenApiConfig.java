@@ -42,7 +42,7 @@ public class OpenApiConfig{
     myContact.setEmail("ricardo@ferreiras.dev.br");
 
     final Info information = new Info()
-        .title("Reactive RESTFUL Api")
+        .title("Reactive RESTful Api")
         .version("1.0.1")
         .description("Reactive Restful API with Spring Webflux and MongoDB")
         .contact(myContact)
