@@ -32,9 +32,9 @@ public class PostController {
       description = "List posts of all users",
       responses = {
           @ApiResponse(responseCode = "200", description = "List of Posts"),
-          @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content),
-          @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content),
-          @ApiResponse(responseCode = "404", description = "Users not found", content = @Content)
+          @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+          @ApiResponse(responseCode = "403", description = "Forbidden!", content = @Content),
+          @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
       }
   )
   @GetMapping
@@ -52,9 +52,9 @@ public class PostController {
       description = "List posts by User id",
       responses = {
           @ApiResponse(responseCode = "200", description = "List of Posts"),
-          @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content),
-          @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content),
-          @ApiResponse(responseCode = "404", description = "Users not found", content = @Content)
+          @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+          @ApiResponse(responseCode = "403", description = "Forbidden!", content = @Content),
+          @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
       }
   )
   @SecurityRequirement(name = "bearerAuth")
@@ -93,6 +93,5 @@ public class PostController {
             .ok()
             .body(posts)
         );
-
   }
 }
