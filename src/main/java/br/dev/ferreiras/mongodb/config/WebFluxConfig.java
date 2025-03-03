@@ -34,6 +34,7 @@ public class WebFluxConfig {
         new EncoderHttpMessageWriter<>(new Jackson2JsonEncoder()),
         new EncoderHttpMessageWriter<>(CharSequenceEncoder.allMimeTypes()));
     RequestedContentTypeResolver resolver = new RequestedContentTypeResolverBuilder().build();
+
     return new ResponseEntityResultHandler(writerList, resolver);
   }
 }

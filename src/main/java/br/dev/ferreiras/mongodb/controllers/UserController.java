@@ -1,11 +1,9 @@
 package br.dev.ferreiras.mongodb.controllers;
 
 import br.dev.ferreiras.mongodb.models.dto.UserDTO;
-import br.dev.ferreiras.mongodb.services.PostService;
 import br.dev.ferreiras.mongodb.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +18,19 @@ import reactor.core.publisher.Mono;
 public class UserController {
 
   private final UserService userService;
-  private final PostService postService;
 
-  public UserController(UserService userService, PostService postService) {
+  public UserController(UserService userService) {
     this.userService = userService;
-    this.postService = postService;
   }
 
   @Operation(
-      summary = "List registered users",
-      description = "List registered users",
+      summary = "List users",
+      description = "List all registered users",
       responses = {
           @ApiResponse(responseCode = "200", description = "List of Registered Users"),
-          @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content),
-          @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content),
-          @ApiResponse(responseCode = "404", description = "Users not found", content = @Content)
+          @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+          @ApiResponse(responseCode = "403", description = "Forbidden!", content = @Content),
+          @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
       }
       )
   @GetMapping
@@ -44,13 +40,13 @@ public class UserController {
   }
 
   @Operation(
-      summary = "List user given his/her id users",
+      summary = "List user",
       description = "List user given his/her id",
       responses = {
           @ApiResponse(responseCode = "200", description = "User returned by his/her id"),
-          @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content),
-          @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content),
-          @ApiResponse(responseCode = "404", description = "Users not found", content = @Content)
+          @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+          @ApiResponse(responseCode = "403", description = "Forbidden!", content = @Content),
+          @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
       }
   )
   @GetMapping(value = "/{id}")
@@ -67,9 +63,9 @@ public class UserController {
       description = "Add user, given his/her name and email",
       responses = {
           @ApiResponse(responseCode = "201", description = "User created"),
-          @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content),
-          @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content),
-          @ApiResponse(responseCode = "404", description = "Users not found", content = @Content)
+          @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+          @ApiResponse(responseCode = "403", description = "Forbidden!", content = @Content),
+          @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
       }
   )
   @PostMapping(produces = "application/json")
@@ -85,13 +81,13 @@ public class UserController {
   }
 
   @Operation(
-      summary = "Update  user given his/her id users",
+      summary = "Update user",
       description = "Update user given his/her id",
       responses = {
           @ApiResponse(responseCode = "200", description = "User returned by his/her id"),
-          @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content),
-          @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content),
-          @ApiResponse(responseCode = "404", description = "Users not found", content = @Content)
+          @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+          @ApiResponse(responseCode = "403", description = "Forbidden!", content = @Content),
+          @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
       }
   )
   @PutMapping(value = "/{id}", produces = "application/json")
@@ -107,12 +103,12 @@ public class UserController {
         );
   }
   @Operation(
-      summary = "Delete user given his/her id users",
+      summary = "Delete user",
       description = "Delete user given his/her id",
       responses = {
           @ApiResponse(responseCode = "204", description = "User deleted"),
-          @ApiResponse(responseCode = "401", description = "Not authorized", content = @Content),
-          @ApiResponse(responseCode = "403", description = "Access Denied!", content = @Content),
+          @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+          @ApiResponse(responseCode = "403", description = "Forbidden!", content = @Content),
           @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
       }
   )

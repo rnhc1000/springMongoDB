@@ -3,9 +3,7 @@ package br.dev.ferreiras.mongodb.services;
 import br.dev.ferreiras.mongodb.models.dto.PostDTO;
 import br.dev.ferreiras.mongodb.models.entities.Post;
 import br.dev.ferreiras.mongodb.repositories.PostRepository;
-import br.dev.ferreiras.mongodb.repositories.UserRepository;
 import br.dev.ferreiras.mongodb.services.exceptions.ResourceNotFoundException;
-import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,11 +15,9 @@ import java.time.Instant;
 public class PostService {
 
   private final PostRepository postRepository;
-  private final UserRepository userRepository;
 
-  public PostService(PostRepository postRepository, UserRepository userRepository) {
+  public PostService(PostRepository postRepository) {
     this.postRepository = postRepository;
-    this.userRepository = userRepository;
   }
 
   public Flux<PostDTO> getAllPosts() {
